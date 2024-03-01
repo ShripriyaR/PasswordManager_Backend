@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import user from "../schema/userSchema.js";
+import passwordmanager from "../schema/userSchema.js";
 
 const userController = {};
 
 userController.authenticate = (req, res) => {
-    user.findOne({username: req.body.username})
+    passwordmanager.findOne({username: req.body.username})
         .then(usr => {
             if(!usr) {
                 res.status(400).send({message: 'user not found!'});
@@ -20,7 +20,7 @@ userController.authenticate = (req, res) => {
 }; 
 
 userController.checkIfUserExists = (req,res) => {
-    user.findOne({username: req.body.username})
+    passwordmanager.findOne({username: req.body.username})
     .then(usr => {
         if(!usr) {
             res.status(404).send({message: 'user not found!'});
@@ -35,14 +35,16 @@ userController.checkIfUserExists = (req,res) => {
 }
 
 userController.addUserDetails = (req,res) => {
-     const newUser = new user({
+     const newUser = new passwordmanager({
         username: req.body.username,
-        password: req.body.password
+        password: req.body.password     
      });
      newUser.save().then(usr => {
         if(!usr){
+            console.log("Error: User not saved.");
             res.status(500).send({message: "Error while saving user data"})
         }else {
+            console.log("User saved successfully:", usr);
             res.status(200).send({message: "Successfully saved User details"})
         }
      }).catch(err => {
@@ -52,7 +54,7 @@ userController.addUserDetails = (req,res) => {
 }
 
 userController.addApp = (req, res) => {
-    user.findOneAndUpdate({username: req.body.username}, {$push: {apps: req.body.app}}, {new: true})
+    passwordmanager.findOneAndUpdate({username: req.body.username}, {$push: {apps: req.body.app}}, {new: true})
         .then(updatedUser => {
             if(updatedUser) {
                 console.dir(updatedUser);
@@ -68,7 +70,7 @@ userController.addApp = (req, res) => {
 }
 
 userController.deleteApp = (req, res) => {
-    user.findOneAndUpdate({username: req.body.username}, {$pull: {apps: {name:req.body.appName}}}, {returnDocument: 'after'})
+    passwordmanager.findOneAndUpdate({username: req.body.username}, {$pull: {apps: {name:req.body.appName}}}, {returnDocument: 'after'})
         .then(updatedUser => {
             if(updatedUser) {
                 console.dir(updatedUser);
