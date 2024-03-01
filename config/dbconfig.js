@@ -1,7 +1,7 @@
 import mongoose, { mongo } from "mongoose";
 import "dotenv/config";
 
-const dbUrl = `${process.env.DATABASE_URL}`;///${process.env.DATABASE}
+const dbUrl = 'mongodb+srv://passwordadmin:dgrVGiyi3bohYxkf@cluster0.mxcry06.mongodb.net/?retryWrites=true&w=majority';//`${process.env.DATABASE_URL}`;///${process.env.DATABASE}
 
 mongoose.connect(dbUrl).catch((error) => {
   console.log("failed to initial db connection ", error);
