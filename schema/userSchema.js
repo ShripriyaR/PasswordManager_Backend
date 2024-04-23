@@ -2,7 +2,7 @@ import mongoose from "../config/dbconfig.js";
 
 
 const appSchema = new mongoose.Schema({
-    username: String,
+    name: String,
     password: String,
     icon: String,
     // Add additional fields like created date, last modified date if needed
