@@ -10,7 +10,7 @@ mongoose.connect(dbUrl).catch((error) => {
 const conn = mongoose.connection;
 
 conn.on("connected", () => {
-  console.log("MongoDb connection successful: ", dbUrl);
+  console.log("MongoDb connection successful ", );
 });
 
 conn.on("disconnected", () => {
