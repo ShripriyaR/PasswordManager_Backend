@@ -45,10 +45,11 @@ userController.generateAndSendOTP = async (req, res) => {
 userController.authenticate = async (req, res) => {
     try {
         const { email, password, otp } = req.body;
-        console.log('Authenticate request body:', req.body);
+        console.log('Authenticate request body:', req.body.email);
 
         
         const user = await passwordmanager.findOne({ email });
+        console.log('User found:', user);
 
         if (!user) {
             return res.status(400).json({ message: 'User not found' });
@@ -132,6 +133,10 @@ userController.addUserDetails = (req,res) => {
 
 userController.addApp = (req, res) => {
     console.log('addApp request body:', req.body); 
+    if (!req.body.email || !req.body.app) {
+        console.log('Email or app data missing');
+        return res.status(400).send({ message: 'Email and app data are required' });
+    }
     passwordmanager.findOneAndUpdate({ email: req.body.email }, { $push: { apps: req.body.app } }, { new: true })
         .then(updatedUser => {
             if(updatedUser) {
